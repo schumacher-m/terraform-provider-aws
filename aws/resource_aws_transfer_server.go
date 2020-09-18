@@ -273,9 +273,10 @@ func resourceAwsTransferServerRead(d *schema.ResourceData, meta interface{}) err
 		d.Set("vpce_security_group_ids", flattenVpcEndpointSecurityGroupIds(out.Groups))
 	}
 
-	if err := d.Set("tags", keyvaluetags.TransferKeyValueTags(resp.Server.Tags).IgnoreAws().Map()); err != nil {
+	if err := d.Set("tags", keyvaluetags.TransferKeyValueTags(resp.Server.Tags).IgnoreAws().IgnoreConfig(ignoreTagsConfig).Map()); err != nil {
 		return fmt.Errorf("Error setting tags: %s", err)
 	}
+
 	return nil
 }
 
